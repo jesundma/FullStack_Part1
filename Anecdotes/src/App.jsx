@@ -13,14 +13,41 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+
+  const VoteMachine = (votes, votedFor) => {
+    const copiedVotes = [...votes]
+    copiedVotes[votedFor] += 1
+    setVotes(copiedVotes)
+
+  }
 
   return (
     <div>
-      {anecdotes[selected]}
+      <p style = {{fontSize: 28, fontWeight: "bold"}}>
+        Anecdote of the day
+      </p>
       <p>
+        {anecdotes[selected]}
+        <br />
+        has {votes[selected]} votes
+      </p>
+      <p> 
+        <button onClick={() => VoteMachine(votes, selected)}>
+          Vote
+        </button>
         <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>
           Next Anecdote
         </button>
+      </p>
+      <p style = {{fontSize: 28, fontWeight: "bold"}}>
+        Anecdote with most votes
+      </p>
+      <p>
+        {/* Inefficient method, loop is faster: https://stackoverflow.com/questions/11301438/return-index-of-greatest-value-in-an-array */}
+        {anecdotes[votes.indexOf(Math.max(...votes))]}
+        <br />
+        has {votes[votes.indexOf(Math.max(...votes))]} votes
       </p>
     </div>
   )
